@@ -26,6 +26,24 @@ namespace tools {
     typedef std::vector<std::shared_ptr<React>> Flux;
 
 
+    FSM( Flux & flux, std::shared_ptr<Content> ctnt )
+    : current( std::type_index( typeid( *( flux.at(0) ) ) ) )
+    , content( ctnt )
+    {
+      for ( auto rct: flux ) {
+        states[ std::type_index( typeid( *rct ) ) ] = State( rct, content );
+      };
+    };
+
+    void operator()( const Message & msg ) {
+      std::lock_guard<std::mutex> lock( fsm_mutex );
+      current = states.at( current )( msg );
+    };
+
+
+  private:
+
+
     class State {
 
     public:
@@ -44,22 +62,6 @@ namespace tools {
     };
 
 
-    FSM( Flux & flux, std::shared_ptr<Content> ctnt )
-    : current( std::type_index( typeid( *( flux.at(0) ) ) ) )
-    , content( ctnt )
-    {
-      for ( auto rct: flux ) {
-        states[ std::type_index( typeid( *rct ) ) ] = State( rct, content );
-      };
-    };
-
-    void operator()( const Message & msg ) {
-      std::lock_guard<std::mutex> lock( fsm_mutex );
-      current = states.at( current )( msg );
-    };
-
-
-  private:
     std::mutex fsm_mutex;
 
     std::shared_ptr<Content> content;
