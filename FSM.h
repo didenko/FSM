@@ -14,10 +14,10 @@ namespace tools {
 
   public:
 
-
+    // Never send events to one's own fsm from inside React descendant classes. They will dead-lock.
     class React {
     public:
-      virtual std::type_index operator()( const Message & msg, std::shared_ptr<Content> ) {
+      virtual std::type_index operator()( const Message & msg, const std::shared_ptr<Content> & cnt ) {
         return std::type_index(typeid(this));
       };
     };
@@ -26,7 +26,7 @@ namespace tools {
     typedef std::vector<std::shared_ptr<React>> Flux;
 
 
-    FSM( Flux & flux, std::shared_ptr<Content> ctnt )
+    FSM( const Flux & flux, std::shared_ptr<Content> ctnt )
     : current( std::type_index( typeid( *( flux.at(0) ) ) ) )
     , content( ctnt )
     {
@@ -47,13 +47,13 @@ namespace tools {
     class State {
 
     public:
-      State( std::shared_ptr<React> rct, std::shared_ptr<Content> ctnt )
+      State( const std::shared_ptr<React> & rct, const std::shared_ptr<Content> & ctnt )
       : content( ctnt ), react( rct ) {};
 
       State() : content( nullptr ), react( nullptr ) {};
 
       std::type_index operator()( const Message & message ) {
-        return (*react)( message, content );
+        return ( *react )( message, content );
       }
 
     private:

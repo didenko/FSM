@@ -11,7 +11,7 @@ namespace tools {
         , idx_unlocked( std::type_index( typeid( Unlocked ) ) )
       {};
 
-      std::type_index Locked::operator()( const TurnstileEvent & msg, std::shared_ptr<TurnstileData> data) {
+      std::type_index Locked::operator()( const TurnstileEvent & msg, const std::shared_ptr<TurnstileData> & data) {
         switch (msg) {
           case PUSH:
             data->pushes += 1;
