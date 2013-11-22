@@ -14,7 +14,9 @@ namespace tools {
 
   public:
 
-    // Never send events to one's own fsm from inside React descendant classes. They will dead-lock.
+    // Never send events to one's own FSM from inside React descendant classes.
+    // They will dead-lock. That will be especially painfull if circles back to
+    // the FSM via a long chain of calls
     class React {
     public:
       virtual std::type_index operator()( const Message & msg, const std::shared_ptr<Content> & cnt ) {
