@@ -26,6 +26,8 @@ namespace tools {
             data->coins  = 0;
             data->state_name = "locked";
             return idx_locked;
+          default:
+            throw std::invalid_argument("Unknown message");
         }
       };
     }
