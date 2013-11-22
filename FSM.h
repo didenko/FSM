@@ -28,7 +28,7 @@ namespace tools {
     typedef std::vector<std::shared_ptr<React>> Flux;
 
 
-    FSM( const Flux & flux, std::shared_ptr<Content> ctnt )
+    FSM( const Flux & flux, const std::shared_ptr<Content> & ctnt )
     : current( std::type_index( typeid( *( flux.at(0) ) ) ) )
     , content( ctnt )
     {
