@@ -4,13 +4,13 @@ namespace tools {
   namespace test {
     namespace fsm {
 
-      class Unlocked: public FSM<TurnstileEvent, TurnstileData>::React {
+      class Unlocked: public TurnstileFSM::React {
       public:
-        Unlocked(void);
-        std::type_index operator()( const TurnstileEvent & msg, const std::shared_ptr<TurnstileData> & data) override;
+        Unlocked( std::shared_ptr<TurnstileData> & content );
+        std::type_index operator()( const TurnstileEvent & msg ) override;
       private:
-        std::type_index idx_locked;
-        std::type_index idx_unlocked;
+        static std::type_index idx_locked;
+        static std::type_index idx_unlocked;
       };
     }
   }

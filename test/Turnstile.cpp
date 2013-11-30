@@ -10,9 +10,9 @@ namespace tools {
       Turnstile::Turnstile(void)
       : stats( std::make_shared<TurnstileData>() )
       {
-        flux.push_back( std::make_shared<Locked>() );
-        flux.push_back( std::make_shared<Unlocked>() );
-        fsm = std::unique_ptr<TurnstileFSM>( new TurnstileFSM( flux, stats ) );
+        flux.push_back( std::make_shared<Locked>(   stats ) );
+        flux.push_back( std::make_shared<Unlocked>( stats ) );
+        fsm = std::unique_ptr<TurnstileFSM>( new TurnstileFSM( flux ) );
       };
 
       void Turnstile::operator()( const TurnstileEvent & msg ) {

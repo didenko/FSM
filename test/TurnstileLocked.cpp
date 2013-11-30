@@ -6,25 +6,27 @@ namespace tools {
   namespace test {
     namespace fsm {
 
-      Locked::Locked()
-        : idx_locked(   std::type_index( typeid(   Locked ) ) )
-        , idx_unlocked( std::type_index( typeid( Unlocked ) ) )
-      {};
+      std::type_index Locked::idx_locked   = std::type_index( typeid(   Locked ) );
+      std::type_index Locked::idx_unlocked = std::type_index( typeid( Unlocked ) );
 
-      std::type_index Locked::operator()( const TurnstileEvent & msg, const std::shared_ptr<TurnstileData> & data) {
+      Locked::Locked( std::shared_ptr<TurnstileData> & content ) : React( content ) {
+        content->state_name = "locked";
+      };
+
+      std::type_index Locked::operator()( const TurnstileEvent & msg ) {
         switch (msg) {
           case PUSH:
-            data->pushes += 1;
-            data->state_name = "locked";
+            cnt->pushes += 1;
+            cnt->state_name = "locked";
             return idx_locked;
           case PAY:
-            data->coins += 1;
-            data->state_name = "unlocked";
+            cnt->coins += 1;
+            cnt->state_name = "unlocked";
             return idx_unlocked;
           case RESET:
-            data->pushes = 0;
-            data->coins  = 0;
-            data->state_name = "locked";
+            cnt->pushes = 0;
+            cnt->coins  = 0;
+            cnt->state_name = "locked";
             return idx_locked;
           default:
             throw std::invalid_argument("Unknown message");

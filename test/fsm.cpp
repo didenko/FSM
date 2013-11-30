@@ -1,4 +1,6 @@
 #include <CppUnitTest.h>
+#include <exception>
+#include <cvt/wstring>
 
 #include "Turnstile.h"
 
@@ -51,6 +53,32 @@ namespace tools {
           Assert::AreEqual<unsigned long>( 0, ts.Pushed(), L"Push counter after RESET expected to be zero.", LINE_INFO() );
           Assert::AreEqual<unsigned long>( 0, ts.Paid(), L"Coin counter after RESET expected to be zero.", LINE_INFO() );
         };
+
+        TEST_METHOD(ToolsFsmBadMessage) {
+          auto ts = Turnstile();
+
+          try {
+            ts( UNHANDLED );
+            Assert::Fail( L"Expected an exception after sending an UNHANDLED message.", LINE_INFO() );
+          }
+
+          catch ( const std::invalid_argument & e ) {}
+
+          catch (const std::exception & e) {
+            Assert::Fail(
+              (
+                L"Expected an invalid_argument exception, instead got: " +
+                std::wstring_convert<std::codecvt<wchar_t, char, std::mbstate_t>>().from_bytes( e.what() )
+              ).c_str(),
+              LINE_INFO()
+            );
+          }
+
+          catch (...) {
+            Assert::Fail( L"Expected an invalid_argument exception, instead got an unknown exception.", LINE_INFO() );
+          };
+        };
+
       };
     }
   }

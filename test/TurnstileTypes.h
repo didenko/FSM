@@ -9,7 +9,7 @@ namespace tools {
       class TurnstileData {
       public:
 
-        TurnstileData() : pushes(0), coins(0), state_name( "locked" ) {};
+        TurnstileData() : pushes(0), coins(0), state_name( "" ) {};
 
         unsigned long pushes;
         unsigned long coins;
@@ -19,7 +19,8 @@ namespace tools {
       enum TurnstileEvent {
         PUSH,
         PAY,
-        RESET
+        RESET,
+        UNHANDLED
       };
 
       typedef FSM<TurnstileEvent, TurnstileData> TurnstileFSM;

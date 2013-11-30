@@ -6,11 +6,11 @@ namespace tools {
 
       class Locked: public TurnstileFSM::React {
       public:
-        Locked(void);
-        std::type_index operator()( const TurnstileEvent & msg, const std::shared_ptr<TurnstileData> & data) override;
+        Locked( std::shared_ptr<TurnstileData> & content );
+        std::type_index operator()( const TurnstileEvent & msg ) override;
       private:
-        std::type_index idx_locked;
-        std::type_index idx_unlocked;
+        static std::type_index idx_locked;
+        static std::type_index idx_unlocked;
       };
     }
   }
