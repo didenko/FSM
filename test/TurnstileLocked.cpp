@@ -9,7 +9,8 @@ namespace tools {
       std::type_index Locked::idx_locked   = std::type_index( typeid(   Locked ) );
       std::type_index Locked::idx_unlocked = std::type_index( typeid( Unlocked ) );
 
-      Locked::Locked( std::shared_ptr<TurnstileData> & content ) : React( content ) {
+      Locked::Locked( std::shared_ptr<TurnstileData> & content ) : React( content )
+      {
         content->state_name = "locked";
       };
 
@@ -18,20 +19,22 @@ namespace tools {
         switch (msg) {
           case PUSH:
             cnt->pushes += 1;
-            cnt->state_name = "locked";
             return idx_locked;
           case PAY:
             cnt->coins += 1;
-            cnt->state_name = "unlocked";
             return idx_unlocked;
           case RESET:
             cnt->pushes = 0;
             cnt->coins  = 0;
-            cnt->state_name = "locked";
             return idx_locked;
           default:
             throw std::invalid_argument("Unknown message");
         }
+      };
+
+      void Locked::OnArrive( const TurnstileEvent & msg )
+      {
+        cnt->state_name = "locked";
       };
     }
   }

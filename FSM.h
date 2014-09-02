@@ -22,6 +22,7 @@ namespace tools {
     public:
       React( std::shared_ptr<Content> & content ) : cnt( content ) {};
       virtual std::type_index OnReceive( const Message & msg ) = 0;
+      virtual void OnArrive( const Message & msg ) {};
     };
 
 
@@ -38,7 +39,12 @@ namespace tools {
 
     void operator()( const Message & msg ) {
       std::lock_guard<std::mutex> lock( fsm_mutex );
-      current = states.at( current ).OnReceive( msg );
+      auto next = states.at( current ).OnReceive( msg );
+      if ( next != current )
+      {
+        current = next;
+        states.at( current ).OnArrive( msg );
+      }
     };
 
 
@@ -55,6 +61,11 @@ namespace tools {
 
       std::type_index OnReceive( const Message & message ) {
         return react->OnReceive( message );
+      }
+
+      void OnArrive( const Message & message )
+      {
+        return react->OnArrive( message );
       }
 
     private:

@@ -16,20 +16,22 @@ namespace tools {
         switch (msg) {
           case PUSH:
             cnt->pushes += 1;
-            cnt->state_name = "locked";
             return idx_locked;
           case PAY:
             cnt->coins += 1;
-            cnt->state_name = "unlocked";
             return idx_unlocked;
           case RESET:
             cnt->pushes = 0;
             cnt->coins  = 0;
-            cnt->state_name = "unlocked";
-            return idx_unlocked;
+            return idx_locked;
           default:
             throw std::invalid_argument("Unknown message");
         }
+      };
+
+      void Unlocked::OnArrive( const TurnstileEvent & msg )
+      {
+        cnt->state_name = "unlocked";
       };
     }
   }
