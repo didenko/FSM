@@ -13,7 +13,8 @@ namespace tools {
         content->state_name = "locked";
       };
 
-      std::type_index Locked::operator()( const TurnstileEvent & msg ) {
+      std::type_index Locked::OnReceive( const TurnstileEvent & msg )
+      {
         switch (msg) {
           case PUSH:
             cnt->pushes += 1;

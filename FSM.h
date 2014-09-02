@@ -21,9 +21,7 @@ namespace tools {
       std::shared_ptr<Content> cnt;
     public:
       React( std::shared_ptr<Content> & content ) : cnt( content ) {};
-      virtual std::type_index operator()( const Message & msg ) {
-        return std::type_index(typeid(this));
-      };
+      virtual std::type_index OnReceive( const Message & msg ) = 0;
     };
 
 
@@ -40,7 +38,7 @@ namespace tools {
 
     void operator()( const Message & msg ) {
       std::lock_guard<std::mutex> lock( fsm_mutex );
-      current = states.at( current )( msg );
+      current = states.at( current ).OnReceive( msg );
     };
 
 
@@ -55,8 +53,8 @@ namespace tools {
 
       State() : react( nullptr ) {};
 
-      std::type_index operator()( const Message & message ) {
-        return ( *react )( message );
+      std::type_index OnReceive( const Message & message ) {
+        return react->OnReceive( message );
       }
 
     private:

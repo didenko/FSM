@@ -7,7 +7,7 @@ namespace tools {
       class Locked: public TurnstileFSM::React {
       public:
         Locked( std::shared_ptr<TurnstileData> & content );
-        std::type_index operator()( const TurnstileEvent & msg ) override;
+        std::type_index OnReceive( const TurnstileEvent & msg ) override;
       private:
         static std::type_index idx_locked;
         static std::type_index idx_unlocked;

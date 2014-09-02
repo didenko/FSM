@@ -11,7 +11,8 @@ namespace tools {
 
       Unlocked::Unlocked( std::shared_ptr<TurnstileData> & content ) : React( content ) {};
 
-      std::type_index Unlocked::operator()( const TurnstileEvent & msg ) {
+      std::type_index Unlocked::OnReceive( const TurnstileEvent & msg )
+      {
         switch (msg) {
           case PUSH:
             cnt->pushes += 1;
