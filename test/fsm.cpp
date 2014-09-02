@@ -49,7 +49,7 @@ namespace tools {
           auto ts = Turnstile();
 
           ts( PUSH ); ts( PAY ); ts( PUSH ); ts( PAY ); ts( PAY ); ts( RESET );
-          Assert::AreEqual<std::string>( "unlocked", ts.Now(), L"State after RESET after PAY expected to be 'unlocked'.", LINE_INFO() );
+          Assert::AreEqual<std::string>( "locked", ts.Now(), L"State after RESET expected to be 'locked'.", LINE_INFO() );
           Assert::AreEqual<unsigned long>( 0, ts.Pushed(), L"Push counter after RESET expected to be zero.", LINE_INFO() );
           Assert::AreEqual<unsigned long>( 0, ts.Paid(), L"Coin counter after RESET expected to be zero.", LINE_INFO() );
         };
