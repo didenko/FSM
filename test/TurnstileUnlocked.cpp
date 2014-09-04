@@ -29,9 +29,10 @@ namespace tools {
         }
       };
 
-      void Unlocked::OnArrive( const TurnstileEvent & msg )
+      std::pair<bool, TurnstileEvent> Unlocked::OnArrive( const TurnstileEvent & msg )
       {
         cnt->state_name = "unlocked";
+        return std::make_pair<bool, TurnstileEvent>( false, TurnstileEvent() );
       };
     }
   }

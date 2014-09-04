@@ -27,14 +27,22 @@ namespace tools {
             cnt->pushes = 0;
             cnt->coins  = 0;
             return idx_locked;
+          case RECURSE:
+            cnt->recursed = true;
+            return idx_locked;
           default:
             throw std::invalid_argument("Unknown message");
         }
       };
 
-      void Locked::OnArrive( const TurnstileEvent & msg )
+      std::pair<bool, TurnstileEvent> Locked::OnArrive( const TurnstileEvent & msg )
       {
         cnt->state_name = "locked";
+        if ( msg == PUSH )
+        {
+          return std::make_pair<bool, TurnstileEvent>( true, RECURSE );
+        }
+        return std::make_pair<bool, TurnstileEvent>( false, TurnstileEvent() );
       };
     }
   }

@@ -9,10 +9,11 @@ namespace tools {
       class TurnstileData {
       public:
 
-        TurnstileData() : pushes(0), coins(0), state_name( "" ) {};
+        TurnstileData() : pushes(0), coins(0), recursed(false), state_name( "" ) {};
 
         unsigned long pushes;
         unsigned long coins;
+        bool recursed;
         std::string state_name;
       };
 
@@ -20,6 +21,7 @@ namespace tools {
         PUSH,
         PAY,
         RESET,
+        RECURSE,
         UNHANDLED
       };
 

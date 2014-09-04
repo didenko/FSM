@@ -22,8 +22,8 @@ namespace tools {
 
       unsigned long Turnstile::Pushed() { return stats->pushes; };
       unsigned long Turnstile::Paid()   { return stats->coins;  };
-      std::string Turnstile::Now()      { return stats->state_name; };
-
+      std::string Turnstile::Now() { return stats->state_name; };
+      bool Turnstile::Recursed() { return stats->recursed; };
     }
   }
 }

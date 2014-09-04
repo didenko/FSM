@@ -18,6 +18,7 @@ namespace tools {
         unsigned long Pushed();
         unsigned long Paid();
         std::string Now();
+        bool Recursed();
 
       private:
 

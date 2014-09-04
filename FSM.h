@@ -15,14 +15,20 @@ namespace tools {
 
     // Never send events to one's own FSM from inside React descendant classes.
     // They will dead-lock. That will be especially painfull if circles back to
-    // the FSM via a long chain of calls
+    // the FSM via a long chain of calls. This is why an FSM is not passed into
+    // React classesin most cases the desired workflow can be achieved by
+    // returning a <true, messageValue> pair from OnArrive method and proper
+    // state architecture.
     class React {
     protected:
       std::shared_ptr<Content> cnt;
     public:
       React( std::shared_ptr<Content> & content ) : cnt( content ) {};
       virtual std::type_index OnReceive( const Message & msg ) = 0;
-      virtual void OnArrive( const Message & msg ) {};
+      virtual std::pair<bool, Message> OnArrive( const Message & msg )
+      {
+        return std::make_pair<bool, Message>( false, Message() );
+      };
     };
 
 
@@ -37,13 +43,25 @@ namespace tools {
       };
     };
 
-    void operator()( const Message & msg ) {
+    void operator()( const Message & message )
+    {
       std::lock_guard<std::mutex> lock( fsm_mutex );
-      auto next = states.at( current ).OnReceive( msg );
-      if ( next != current )
+      auto msg = message;
+      bool has_message = true;
+      while ( has_message )
       {
-        current = next;
-        states.at( current ).OnArrive( msg );
+        has_message = false;
+        auto next = states.at( current ).OnReceive( msg );
+        if ( next != current )
+        {
+          current = next;
+          auto followup = states.at( current ).OnArrive( msg );
+          if ( followup.first )
+          {
+            msg = followup.second;
+            has_message = true;
+          }
+        }
       }
     };
 
@@ -63,7 +81,7 @@ namespace tools {
         return react->OnReceive( message );
       }
 
-      void OnArrive( const Message & message )
+      std::pair<bool, Message> OnArrive( const Message & message )
       {
         return react->OnArrive( message );
       }

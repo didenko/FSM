@@ -54,7 +54,23 @@ namespace tools {
           Assert::AreEqual<unsigned long>( 0, ts.Paid(), L"Coin counter after RESET expected to be zero.", LINE_INFO() );
         };
 
-        TEST_METHOD(ToolsFsmBadMessage) {
+        TEST_METHOD( ToolsFsmOnArrival )
+        {
+          auto ts = Turnstile();
+          Assert::IsFalse( ts.Recursed(), L"Recused flag shold be FALSE after construction.", LINE_INFO() );
+          Assert::AreEqual<std::string>( "locked", ts.Now(), L"State after construction should to be 'locked'.", LINE_INFO() );
+
+          ts( PUSH );
+          Assert::IsFalse( ts.Recursed(), L"Recused flag shold be FALSE after PUSH in the 'locked' state.", LINE_INFO() );
+          Assert::AreEqual<std::string>( "locked", ts.Now(), L"State should to be 'locked' after PUSH in the 'locked' state.", LINE_INFO() );
+
+          ts( PAY ); ts( PUSH );
+          Assert::IsTrue( ts.Recursed(), L"Recursed flag shold be TRUE after locking PUSH.", LINE_INFO() );
+          Assert::AreEqual<std::string>( "locked", ts.Now(), L"State should to be 'locked' after locking PUSH.", LINE_INFO() );
+        };
+
+        TEST_METHOD( ToolsFsmBadMessage )
+        {
           auto ts = Turnstile();
 
           try {
