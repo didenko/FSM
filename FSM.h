@@ -16,9 +16,10 @@ namespace tools {
     // Never send events to one's own FSM from inside React descendant classes.
     // They will dead-lock. That will be especially painfull if circles back to
     // the FSM via a long chain of calls. This is why an FSM is not passed into
-    // React classesin most cases the desired workflow can be achieved by
+    // React classes. In most cases the desired workflow can be achieved by
     // returning a <true, messageValue> pair from OnArrive method and proper
-    // state architecture.
+    // state graph.
+
     class React {
     protected:
       std::shared_ptr<Content> cnt;

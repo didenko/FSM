@@ -57,11 +57,11 @@ namespace tools {
         TEST_METHOD( ToolsFsmOnArrival )
         {
           auto ts = Turnstile();
-          Assert::IsFalse( ts.Recursed(), L"Recused flag shold be FALSE after construction.", LINE_INFO() );
+          Assert::IsFalse( ts.Recursed(), L"Recursed flag shold be FALSE after construction.", LINE_INFO() );
           Assert::AreEqual<std::string>( "locked", ts.Now(), L"State after construction should to be 'locked'.", LINE_INFO() );
 
           ts( PUSH );
-          Assert::IsFalse( ts.Recursed(), L"Recused flag shold be FALSE after PUSH in the 'locked' state.", LINE_INFO() );
+          Assert::IsFalse( ts.Recursed(), L"Recursed flag shold be FALSE after PUSH in the 'locked' state.", LINE_INFO() );
           Assert::AreEqual<std::string>( "locked", ts.Now(), L"State should to be 'locked' after PUSH in the 'locked' state.", LINE_INFO() );
 
           ts( PAY ); ts( PUSH );

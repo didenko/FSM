@@ -6,7 +6,8 @@ namespace tools {
   namespace test {
     namespace fsm {
 
-      // Implementation of the Turnstile FSM example from http://en.wikipedia.org/wiki/Finite_state_machine#Example:_a_turnstile
+      // Implementation of the Turnstile FSM example from:
+      // http://en.wikipedia.org/wiki/Finite_state_machine#Example:_a_turnstile
       // Added RESET event to better test state.
       class Turnstile {
       public:
@@ -26,7 +27,6 @@ namespace tools {
         std::unique_ptr<TurnstileFSM> fsm;
         std::shared_ptr<TurnstileData> stats;
       };
-
     }
   }
 }
