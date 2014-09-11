@@ -27,7 +27,7 @@ namespace tools {
             return idx_locked;
           case PAY:
             cnt->coins += 1;
-            return idx_unlocked;
+            return TurnstileFSM::idx_nochange;
           case RESET:
             cnt->pushes = 0;
             cnt->coins  = 0;

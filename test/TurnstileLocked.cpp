@@ -27,7 +27,7 @@ namespace tools {
         switch (msg) {
           case PUSH:
             cnt->pushes += 1;
-            return idx_locked;
+            return TurnstileFSM::idx_nochange;
           case PAY:
             cnt->coins += 1;
             return idx_unlocked;
