@@ -6,9 +6,6 @@ namespace tools {
   namespace test {
     namespace fsm {
 
-      std::type_index Locked::idx_locked   = std::type_index( typeid(   Locked ) );
-      std::type_index Locked::idx_unlocked = std::type_index( typeid( Unlocked ) );
-
       Locked::Locked( std::shared_ptr<TurnstileData> & content ) : React( content )
       {
         content->state_name = "locked";

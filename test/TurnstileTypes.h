@@ -26,6 +26,11 @@ namespace tools {
       };
 
       typedef FSM<TurnstileEvent, TurnstileData> TurnstileFSM;
+
+      class Locked;
+      class Unlocked;
+      const std::type_index idx_locked( typeid(Locked) );
+      const std::type_index idx_unlocked( typeid(Unlocked) );
     }
   }
 }
